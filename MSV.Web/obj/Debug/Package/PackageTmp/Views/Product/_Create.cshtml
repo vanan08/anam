@@ -1,0 +1,119 @@
+﻿<script type="text/ng-template" id="createModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Create @ViewBag.Title</h3>
+    </div>
+    <form name="createForm" novalidate ng-submit="create(product)">
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="form-group" ng-class="{ 'has-error' : createForm.ProductName.$invalid && (createForm.ProductName.$dirty || submitted)}">
+                    <div class="col-md-3 control-label">
+                        Product Name
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="ProductName" ng-model="product.ProductName" placeholder="" class="form-control input-sm" ng-required="true" />
+                        <div ng-show="createForm.ProductName.$invalid && (createForm.ProductName.$dirty || submitted)">
+                            <div ng-show="createForm.ProductName.$error.required" class="help-block">Required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createForm.QuantityPerUnit.$invalid && (createForm.QuantityPerUnit.$dirty || submitted)}">
+                    <div class="col-md-3 control-label">
+                        Quantity Per Unit
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="QuantityPerUnit" ng-model="product.QuantityPerUnit" placeholder="" class="form-control input-sm" ng-required="true" />
+                        <div ng-show="createForm.QuantityPerUnit.$invalid && (createForm.QuantityPerUnit.$dirty || submitted)">
+                            <div ng-show="createForm.QuantityPerUnit.$error.required" class="help-block">Required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createForm.UnitPrice.$invalid && (createForm.UnitPrice.$dirty || submitted)}">
+                    <div class="col-md-3 control-label">
+                        Unit Price
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="UnitPrice" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="product.UnitPrice" placeholder="" class="form-control input-sm" ng-required="true" />
+                        <div ng-show="createForm.UnitPrice.$invalid && (createForm.UnitPrice.$dirty || submitted)">
+                            <div ng-show="createForm.UnitPrice.$error.required" class="help-block">Required</div>
+                            <div ng-show="createForm.UnitPrice.$error.pattern" class="help-block">Invalid price</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createForm.UnitsInStock.$invalid && (createForm.UnitsInStock.$dirty || submitted)}">
+                    <div class="col-md-3 control-label">
+                        Units In Stock
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="UnitsInStock" ng-pattern="/^[0-9]+$/" ng-model="product.UnitsInStock" placeholder="" class="form-control input-sm" ng-required="true" />
+                        <div ng-show="createForm.UnitsInStock.$invalid && (createForm.UnitsInStock.$dirty || submitted)">
+                            <div ng-show="createForm.UnitsInStock.$error.required" class="help-block">Required</div>
+                            <div ng-show="createForm.UnitsInStock.$error.pattern" class="help-block">Invalid number</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createForm.UnitsOnOrder.$invalid && (createForm.UnitsOnOrder.$dirty || submitted)}">
+                    <div class="col-md-3 control-label">
+                        Units On Order
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="UnitsOnOrder" ng-pattern="/^[0-9]+$/" ng-model="product.UnitsOnOrder" placeholder="" class="form-control input-sm" ng-required="true" />
+                        <div ng-show="createForm.UnitsOnOrder.$invalid && (createForm.UnitsOnOrder.$dirty || submitted)">
+                            <div ng-show="createForm.UnitsOnOrder.$error.required" class="help-block">Required</div>
+                            <div ng-show="createForm.UnitsOnOrder.$error.pattern" class="help-block">Invalid number</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createForm.ReorderLevel.$invalid && (createForm.ReorderLevel.$dirty || submitted)}">
+                    <div class="col-md-3 control-label">
+                        Reorder Level
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="ReorderLevel" ng-pattern="/^[0-9]+$/" ng-model="product.ReorderLevel" placeholder="" class="form-control input-sm" ng-required="true" />
+                        <div ng-show="createForm.ReorderLevel.$invalid && (createForm.ReorderLevel.$dirty || submitted)">
+                            <div ng-show="createForm.ReorderLevel.$error.required" class="help-block">Required</div>
+                            <div ng-show="createForm.ReorderLevel.$error.pattern" class="help-block">Invalid number</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3 control-label">
+                        Discontinued
+                    </div>
+                    <div class="col-md-9">
+                        <input type="checkbox" ng-model="product.Discontinued" style="margin-top:9px">
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createForm.SelectedSupplier.$invalid && (createForm.SelectedSupplier.$dirty || submitted)}">
+                    <div class="col-md-3 control-label">
+                        Supplier
+                    </div>
+                    <div class="col-md-9">
+                        <select class="form-control" name="SelectedSupplier" ng-model="product.SupplierID" ng-options="item.ID as item.Name for item in availableSuppliers" ng-required="true">
+                            <option value="">Select...</option>
+                        </select>
+                        <div ng-show="createForm.SelectedSupplier.$invalid && (createForm.SelectedSupplier.$dirty || submitted)">
+                            <div ng-show="createForm.SelectedSupplier.$error.required" class="help-block">Required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createForm.SelectedCategory.$invalid && (createForm.SelectedCategory.$dirty || submitted)}">
+                    <div class=" col-md-3 control-label">
+                        Category
+                    </div>
+                    <div class="col-md-9">
+                        <select class="form-control" name="SelectedCategory" ng-model="product.CategoryID" ng-options="item.ID as item.Name for item in availableCategories" ng-required="true">
+                            <option value="">Select...</option>
+                        </select>
+                        <div ng-show="createForm.SelectedCategory.$invalid && (createForm.SelectedCategory.$dirty || submitted)">
+                            <div ng-show="createForm.SelectedCategory.$error.required" class="help-block">Required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input class="btn btn-default btn-sm" type="button" ng-click="cancel()" value="Cancel" ng-disabled="isProcessing" />
+            <input class="btn btn-primary btn-sm" type="submit" ng-click="submitted=true" value="Create" ng-disabled="isProcessing" />
+        </div>
+    </form>
+</script>

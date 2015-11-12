@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="/anam" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\nvan\\Documents\\ANam\\Web\\MSV\.Web\\obj\\Debug\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\nvan\\Documents\\ANam\\Web\\MSV\.Web\\obj\\Debug\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="AngularJSAuthentication.API.AuthContext-Web.config Connection String" description="" value="AngularJSAuthentication.API.AuthContext_ConnectionString" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nvan\\Documents\\ANam\\Web\\MSV\.Web\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='AngularJSAuthentication.API.AuthContext']/@connectionString" />
+  </parameter>
+  <parameter name="NORTHWNDContext-Web.config Connection String" description="" value="Data Source=VANAN-PC\SQLEXPRESS;Initial Catalog=northwind;persist security info=True;;User ID=sa;Password=1;" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nvan\\Documents\\ANam\\Web\\MSV\.Web\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='NORTHWNDContext']/@connectionString" />
+  </parameter>
+</parameters>

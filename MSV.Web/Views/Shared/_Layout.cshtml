@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html data-ng-app="Northwind">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Northwind Demo</title>
+    <meta name="description" content="The description of my Northwind Angular application" />
+    <!-- Bootstrap -->    
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Northwind Demo", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Product", "Product", "Home")</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Northwind Demo</p>
+        </footer>
+    </div>    
+    <!-- jquery -->
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <!-- angular -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-resource.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-animate.min.js"></script>
+    <!-- angular boostrap ui -->
+    <script src="~/Scripts/ui-bootstrap-tpls-0.11.2.js"></script>
+    <!-- toaster -->
+    <script src="~/Scripts/toaster.min.js"></script>    
+    <!-- loading bar -->
+    <script src="~/Scripts/loading-bar.js"></script>
+    <!-- app -->
+    <script src="~/Scripts/App/app.js"></script>
+    <script src="~/Scripts/App/productController.js"></script>
+
+    @RenderSection("scripts", required: false)
+    @StackExchange.Profiling.MiniProfiler.RenderIncludes()
+</body>
+</html>

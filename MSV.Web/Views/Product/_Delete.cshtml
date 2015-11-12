@@ -1,0 +1,90 @@
+﻿<script type="text/ng-template" id="deleteModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete this @ViewBag.Title?</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-3 control-label">
+                    Product Name
+                </div>
+                <div class="col-md-9">
+                    <input type="text" name="ProductName" ng-model="product.ProductName" placeholder="" class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 control-label">
+                    Quantity Per Unit
+                </div>
+                <div class="col-md-9">
+                    <input type="text" name="QuantityPerUnit" ng-model="product.QuantityPerUnit" placeholder="" class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 control-label">
+                    Unit Price
+                </div>
+                <div class="col-md-9">
+                    <input type="text" name="UnitPrice" ng-model="product.UnitPrice" placeholder="" class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 control-label">
+                    Units In Stock
+                </div>
+                <div class="col-md-9">
+                    <input type="text" name="UnitsInStock" ng-model="product.UnitsInStock" placeholder="" class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 control-label">
+                    Units On Order
+                </div>
+                <div class="col-md-9">
+                    <input type="text" name="UnitsOnOrder" ng-model="product.UnitsOnOrder" placeholder="" class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 control-label">
+                    Reorder Level
+                </div>
+                <div class="col-md-9">
+                    <input type="text" name="ReorderLevel" ng-model="product.ReorderLevel" placeholder="" class="form-control input-sm" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 control-label">
+                    Discontinued
+                </div>
+                <div class="col-md-9">
+                    <input type="checkbox" ng-model="product.Discontinued" style="margin-top:9px">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 control-label">
+                    Supplier
+                </div>
+                <div class="col-md-9">
+                    <select class="form-control" ng-model="product.SupplierID" ng-options="item.ID as item.Name for item in availableSuppliers">
+                        <option value="">Select...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class=" col-md-3 control-label">
+                    Category
+                </div>
+                <div class="col-md-9">
+                    <select class="form-control" ng-model="product.CategoryID" ng-options="item.ID as item.Name for item in availableCategories">
+                        <option value="">Select...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-click="cancel()" ng-disabled="isProcessing">Cancel</button>
+        <button class="btn btn-danger btn-sm" ng-click="delete(product.ProductID)" ng-disabled="isProcessing">Delete</button>
+    </div>
+</script>
+
