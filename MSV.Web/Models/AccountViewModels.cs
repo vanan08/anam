@@ -64,7 +64,7 @@ namespace Accuracy.Web.Models
         public string Password { get; set; }
 
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "ImageIndexs")]
         public string ImageIndexs { get; set; }
     }
 

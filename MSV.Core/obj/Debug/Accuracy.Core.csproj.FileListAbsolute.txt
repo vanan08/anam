@@ -7,3 +7,4 @@ C:\Users\nvan\Documents\ANam\Web\MSV.Core\bin\Debug\EntityFramework.xml
 C:\Users\nvan\Documents\ANam\Web\MSV.Core\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\nvan\Documents\ANam\Web\MSV.Core\obj\Debug\Accuracy.Core.dll
 C:\Users\nvan\Documents\ANam\Web\MSV.Core\obj\Debug\Accuracy.Core.pdb
+C:\Users\nvan\Documents\ANam\Web\MSV.Core\obj\Debug\Accuracy.Core.csprojResolveAssemblyReference.cache

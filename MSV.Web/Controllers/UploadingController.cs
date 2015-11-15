@@ -23,7 +23,6 @@ namespace Accuracy.Web.Controllers
         //  POST api/Uploading/Post
         
         [ResponseType(typeof(FileDesc))]
-        [Authorize]
         [System.Web.Http.HttpPost]
         public Task<IEnumerable<FileDesc>> Post()
         {
@@ -45,35 +44,27 @@ namespace Accuracy.Web.Controllers
 
                     if (t.IsFaulted || t.IsCanceled)
                     {
-                        HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.InternalServerError, "Internal server error");
-                        response.Headers.Add("Error-Code", "EUFILE");
-                        throw new HttpResponseException(response);
+                        HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.InternalServerError, "Internal server error alo");
+                       
                     }
 
                     var fileInfo = streamProvider.FileData.Select(i =>
                     {
                         var info = new FileInfo(i.LocalFileName);
-                        string extention = Path.GetExtension(info.Name);
-                        string newFileName = info.Name + "-" + fileName + extention;
+                        //string extention = Path.GetExtension(info.Name);
+                        //string newFileName = info.Name + "-" + fileName + extention;
                         if (info.Exists)
                         {
-                            if (File.Exists(PATH + "/" + newFileName))
-                            {
-                                File.Delete(PATH + "/" + newFileName);
-                            }
+                            
 
-                            info.MoveTo(PATH + "/" + newFileName);
+                            info.MoveTo(PATH + "/" + info.Name);
                         }
 
                         if (fileName.Equals("")) fileName = info.Name;
 
-                        string fileUrl = rootUrl + "/" + folderName + "/" + newFileName;
+                        string fileUrl = rootUrl + "/" + folderName + "/" + info.Name;
                         
-                        //Update Avatar
-                        using (NORTHWNDContext context = new NORTHWNDContext())
-                        {
-                            //TODO: insert to DB
-                        }
+                        
 
                         return new FileDesc(fileName, fileUrl, info.Length / 1024);
                     });
@@ -86,7 +77,6 @@ namespace Accuracy.Web.Controllers
             else
             {
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted");
-                response.Headers.Add("Error-Code", "EUFILE");
                 throw new HttpResponseException(response);
             }
         }

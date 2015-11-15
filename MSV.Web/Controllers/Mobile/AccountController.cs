@@ -70,6 +70,7 @@ namespace Accuracy.Web.Controllers.API
             }
 
             var user = await UserManager.FindByNameAsync(model.Email);
+            int[] myInts = model.ImageIndexs.Split(';').Select(int.Parse).ToArray();
 
             if (user != null)
             {
@@ -86,8 +87,8 @@ namespace Accuracy.Web.Controllers.API
                     Id = x.Id,
                     ImageUrl = x.ImageUrl,
                     Index = x.Index
-                }).Where(z => ImageIds.Contains(z.Id)).OrderBy(x => x.Index);
-                if (imageModels.Count() > 0)
+                }).Where(z => ImageIds.Contains(z.Id)).Where(z => myInts.Contains(z.Index)).OrderBy(x => x.Index);
+                if (imageModels.Count() == 3)
                     return Ok(imageModels);
             }
 
@@ -124,18 +125,22 @@ namespace Accuracy.Web.Controllers.API
             };
             var result = await UserManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
                 var images = await ImageRepository.FindAllAsync();
+
+                int[] myInts = model.ImageIndexs.Split(';').Select(int.Parse).ToArray();
+
                 var imageModels = images.Select(x => new ImageModel
                 {
                     Id = x.Id,
                     ImageUrl = x.ImageUrl,
                     Index = x.Index
-                }).Where(z => model.ImageIndexs.Split(';').Contains(""+z.Index)).OrderBy(x => x.Index);
+                }).Where(z => myInts.Contains(z.Index)).OrderBy(x => x.Index).ToArray();
 
                 for(int i=0; i<imageModels.Count(); i++){
-                    await UserImageRepository.SaveAsync(new UserImage() { ImageId = imageModels.ToArray()[i].Id, Username = model.Email });
+                    int imageId = imageModels.ToArray()[i].Id;
+                    await UserImageRepository.SaveAsync(new UserImage() { ImageId = imageId, Username = model.Email });
                 }
                 return Ok("Registered");
             }
@@ -150,32 +155,41 @@ namespace Accuracy.Web.Controllers.API
         public async Task<IHttpActionResult> GetRegisterImages(LoginViewModel model)
         {
             if (model.Times > 3)
-                return Ok("Fail: more than 3 times");
-
-            var images = await ImageRepository.FindAllAsync();
-            int count = images.Select(x => new ImageModel
+                return Ok("Ok");
+            try
             {
-                Id = x.Id,
-                ImageUrl = x.ImageUrl,
-                Index = x.Index
-            }).Count();
+                var images = await ImageRepository.FindAllAsync();
+                int count = images.Select(x => new ImageModel
+                {
+                    Id = x.Id,
+                    ImageUrl = x.ImageUrl,
+                    Index = x.Index
+                }).Count();
 
-            int[] indexArray = new int[9];
-            Random getrandom = new Random();
-            var values = Enumerable.Range(1, count).OrderBy(x => getrandom.Next()).ToArray();
-            for (int i = 0; i < indexArray.Length; i++)
-            {
-                indexArray[i] = values[i];
+                int[] indexArray = new int[9];
+                Random getrandom = new Random();
+                var values = Enumerable.Range(1, count).OrderBy(x => getrandom.Next()).ToArray();
+                for (int i = 0; i < indexArray.Length; i++)
+                {
+                    indexArray[i] = values[i];
+                }
+
+
+                return Ok(images.Select(x => new ImageModel
+                {
+                    Id = x.Id,
+                    ImageUrl = x.ImageUrl,
+                    Index = x.Index
+                }).Where(z => indexArray.Contains(z.Index)).OrderBy(x => x.Index).ToArray());
             }
-
-
-            return Ok(images.Select(x => new ImageModel
+            catch (Exception ex)
             {
-                Id = x.Id,
-                ImageUrl = x.ImageUrl,
-                Index = x.Index
-            }).Where(z => indexArray.Contains(z.Index)).OrderBy(x => x.Index).ToArray());
+
+            }
+            return Ok("Fail");
+            
         }
+
 
         [AllowAnonymous]
         [Route("GetLoginImages")]
@@ -192,7 +206,7 @@ namespace Accuracy.Web.Controllers.API
             if (user != null)
             {
                 if (model.Times > 3)
-                    return Ok("Fail: more than 3 times");
+                    return Ok("Ok");
 
                 var images = await ImageRepository.FindAllAsync();
                 int count = images.Select(x => new ImageModel
@@ -202,21 +216,37 @@ namespace Accuracy.Web.Controllers.API
                     Index = x.Index
                 }).Count();
 
-                int[] indexArray = new int[9];
-                Random getrandom = new Random();
-                var values = Enumerable.Range(1, count).OrderBy(x => getrandom.Next()).ToArray();
-                for (int i = 0; i < indexArray.Length; i++)
-                {
-                    int x = getrandom.Next(1, 20);
-                    indexArray[i] = values[i];
-                }
+                
 
                 //Get all images user registed
                 var userImages = await UserImageRepository.FindAllByAsync(u => u.Username == model.Email);
                 var arrUserImages = userImages.ToArray();
 
+                List<int> lsImageIds = new List<int>();
+                for (int i = 0; i < arrUserImages.Length; i++)
+                {
+                    lsImageIds.Add(arrUserImages[i].ImageId);
+                }
+
+                int[] indexArray = new int[9];
+                Random getrandom = new Random();
+                var values = Enumerable.Range(1, count).OrderBy(x => getrandom.Next()).ToArray();
+                List<int> iValues = new List<int>();
+                for (int i = 0; i < values.Length; i++)
+                {
+                    if (!lsImageIds.Contains(values[i]))
+                    {
+                        iValues.Add(values[i]);
+                    }
+                }
+
+                for (int i = 0; i < indexArray.Length; i++)
+                {
+                    indexArray[i] = iValues[i];
+                }
+
                 //Get a image (3times)
-                UserImage userImage = arrUserImages[model.Times];
+                UserImage userImage = arrUserImages[model.Times - 1];
                 ImageModel imageModel = images.Select(x => new ImageModel
                 {
                     Id = x.Id,
@@ -226,13 +256,14 @@ namespace Accuracy.Web.Controllers.API
 
                 //Get random index for set user image registed to array
                 int userSelectedIndex = getrandom.Next(1, 9);
+                
 
                 var imageArray = images.Select(x => new ImageModel
                 {
                     Id = x.Id,
                     ImageUrl = x.ImageUrl,
                     Index = x.Index
-                }).Where(z => indexArray.Contains(z.Index)).OrderBy(x => x.Index);
+                }).Where(z => indexArray.Contains(z.Index)).Where(z => !lsImageIds.Contains(z.Id)).OrderBy(x => x.Index);
 
 
                 ImageModel[] lsImageModel = imageArray.ToArray();
